@@ -99,3 +99,11 @@ Skill 会先要求提供：
 | `references/data-contract.md` | MCP 能力绑定、字段判定、缺失月份与调用控制规则。 |
 | `assets/category-sales-trend-template.html` | 固定紫粉视觉的离线 HTML 看板模板。 |
 | `scripts/build_dashboard.py` | 校验月度数据并向模板安全注入数据的本地构建脚本。 |
+
+## 七、版本记录
+
+**后续每次发布功能更新，均在下表新增一行。GitHub 提交记录只记录该功能变更对应的主要提交；仅补充或修订说明文档时，不新增功能版本，也不新增版本记录行。**
+
+| 版本 | 日期 | 功能变更 | 主要提交 |
+| --- | --- | --- | --- |
+| v1.0.0 | 2026-08-07 | 首次发布：动态绑定卖家精灵 MCP，基于完整类目 `totalUnits` 生成近 24 个月离线销量趋势看板，并支持缺失月份的部分覆盖展示。 | [`4701a41`](https://github.com/defway888-design/kuajing-wulaoshi-amazon-category-sales-trend-skill/commit/4701a41724952ff356f6225e9c8ca9589c4902b8) |
