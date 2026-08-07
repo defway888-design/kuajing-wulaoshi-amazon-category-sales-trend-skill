@@ -24,6 +24,11 @@ CURRENCY_BY_MARKETPLACE = {
     "DE": "EUR", "FR": "EUR", "IT": "EUR", "ES": "EUR", "MX": "MXN",
     "BR": "BRL", "IN": "INR", "AE": "AED",
 }
+CATEGORY_CONFIRMATION = {
+    "verified_leaf": "已验证叶子类目",
+    "user_confirmed_unverified": "用户确认的最细匹配类目（SellerSprite MCP 未提供叶子验证）",
+    "blocked": "未完成类目确认",
+}
 
 
 def fail(message: str) -> None:
@@ -103,14 +108,20 @@ def kpi(label: str, value: float | int | None, signed: bool = False) -> dict[str
     return {"label": label, "value": value, "signed": signed}
 
 
-def normalize_category(source: Any, default_leaf_status: str) -> dict[str, str]:
+def normalize_category(source: Any, blocked: bool) -> dict[str, str]:
     if not isinstance(source, dict):
         source = {}
+    confirmation = source.get("confirmationStatus")
+    if blocked:
+        confirmation = "blocked"
+    elif confirmation not in ("verified_leaf", "user_confirmed_unverified"):
+        fail("非阻断状态的 category.confirmationStatus 必须是 verified_leaf 或 user_confirmed_unverified。")
     return {
         "englishPath": str(source.get("englishPath") or "—"),
         "localPath": str(source.get("localPath") or "—"),
         "nodeIdPath": str(source.get("nodeIdPath") or "—"),
-        "leafStatus": str(source.get("leafStatus") or default_leaf_status),
+        "confirmationStatus": confirmation,
+        "leafStatus": CATEGORY_CONFIRMATION[confirmation],
     }
 
 
@@ -178,7 +189,8 @@ def build_payload(source: dict[str, Any]) -> dict[str, Any]:
     else:
         overall = "两个12个月周期的覆盖不完整，不计算同比变化"
 
-    scope_label = f"完整类目月度销量（已确认 {available_months}/24 月）"
+    category = normalize_category(source.get("category"), status == "blocked")
+    scope_label = f"完整类目月度销量（已确认 {available_months}/24 月；{category['leafStatus']}）"
     output = {
         "status": status,
         "marketplace": marketplace,
@@ -186,7 +198,7 @@ def build_payload(source: dict[str, Any]) -> dict[str, Any]:
         "targetCutoffMonth": cutoff,
         "currencyCode": str(source.get("currencyCode") or CURRENCY_BY_MARKETPLACE[marketplace]),
         "scopeLabel": scope_label,
-        "category": normalize_category(source.get("category"), "未完成验证" if status == "blocked" else "已验证"),
+        "category": category,
         "coverage": {"expectedMonths": 24, "availableMonths": available_months},
         "monthly": rows,
         "kpis": {

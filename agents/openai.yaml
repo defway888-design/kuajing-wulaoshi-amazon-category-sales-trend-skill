@@ -1,4 +1,4 @@
 interface:
   display_name: "跨境吴老师类目销量趋势"
-  short_description: "生成 Amazon 叶子类目月度销量趋势离线 HTML 看板"
+  short_description: "生成 Amazon 已验证或用户确认类目的销量趋势看板"
   default_prompt: "使用 $kuajing-wulaoshi-amazon-category-sales-trend 启动跨境吴老师 Amazon 类目近24个月销量趋势分析。"
