@@ -10,48 +10,20 @@
 
 不用于关键词趋势、ASIN 销量趋势，且不会使用 Top 100 商品样本替代完整类目销量。
 
-## 二、首次安装
+## 二、从公共仓库安装
 
-### 1. 登录 GitHub 并提交用户名
+本仓库为公共 GitHub 仓库。安装无需提交 GitHub 用户名、接受邀请、申请访问权限或提供 GitHub 令牌。
 
-首次安装前，需要先将自己的 GitHub 用户名提交给跨境吴老师。
-
-操作步骤：
-
-登录 GitHub
--> 点击右上角头像
--> 选择 Your profile
--> 进入个人主页
--> 复制浏览器地址栏中的完整网址
--> 将网址发送给跨境吴老师
-
-注意：GitHub 用户名不是邮箱。请不要发送邮箱密码、GitHub 密码或其他授权信息。
-
-### 2. 接受私有仓库邀请
-
-跨境吴老师收到 GitHub 用户名后，会发送私有仓库访问邀请。
-
-用户操作：
-
-登录 GitHub
--> 打开 GitHub 发送的邀请邮件
--> 点击 View invitation
--> 点击 Accept invitation
-
-如果可以看到仓库页面和文件列表，说明已经获得访问权限。
-
-### 3. 在 Codex 中发出安装指令
-
-打开 Codex，新建一个对话，输入：
+在 Codex 中新建一个对话，输入：
 
 ```text
-请从以下 GitHub 私有仓库安装跨境吴老师 Amazon 类目销量趋势 Skill：
+请从以下 GitHub 仓库安装跨境吴老师 Amazon 类目销量趋势 Skill：
 https://github.com/defway888-design/kuajing-wulaoshi-amazon-category-sales-trend-skill
 ```
 
-按照 Codex 提示完成 GitHub 授权。
+Codex 会下载并安装到当前用户自己的 `$CODEX_HOME/skills/kuajing-wulaoshi-amazon-category-sales-trend`；未设置 `CODEX_HOME` 时，默认安装到 `~/.codex/skills/kuajing-wulaoshi-amazon-category-sales-trend`。无需手动创建固定路径。
 
-### 4. 重启 Codex
+安装完成后，该 Skill 会在下一个 Codex 对话中可用；如当前客户端尚未刷新 Skill 列表，再重启 Codex。
 
 安装完成后，关闭并重新打开 Codex，使 Skill 生效。
 
@@ -91,6 +63,7 @@ Skill 会先要求提供：
 - 有多个可用卖家精灵 MCP 连接时，Skill 会请你选择本次任务使用的连接。
 - SellerSprite MCP 未提供叶子验证时，Skill 不会将路径最末级、商品数或空结果当作叶子证明；只有用户确认具体候选路径后才会采集销量。看板会明确显示“用户确认的最细匹配类目（SellerSprite MCP 未提供叶子验证）”。
 - 任务内会复用相同请求的已确认结果并串行调用；仅遵循运行时工具明确给出的限流或重试提示，不虚构官方调用额度。
+- Skill 的模板通过自身相对路径加载；输出写入当前任务环境可写的交付目录，不依赖作者电脑的盘符、用户目录、缓存、临时目录、工作区或 MCP 配置位置。
 - 不会将商品名、类目路径、节点 ID、销量、MCP 地址、密钥或调用日志写入本 Skill 仓库。
 - 本 Skill 为跨境吴老师专用模板，未经授权不得移除、替换或弱化 Skill 名称、执行提示和页面标题中的跨境吴老师标识。
 
@@ -113,3 +86,4 @@ Skill 会先要求提供：
 | v1.0.0 | 2026-08-07 | 首次发布：动态绑定卖家精灵 MCP，基于完整类目 `totalUnits` 生成近 24 个月离线销量趋势看板，并支持缺失月份的部分覆盖展示。 | [`4701a41`](https://github.com/defway888-design/kuajing-wulaoshi-amazon-category-sales-trend-skill/commit/4701a41724952ff356f6225e9c8ca9589c4902b8) |
 | v1.1.0 | 2026-08-07 | 新增类目双轨确认：MCP 可验证叶子时自动继续；缺少叶子验证能力时必须取得用户对具体路径的确认，并在看板中透明标注未验证状态。 | [`19a8a50`](https://github.com/defway888-design/kuajing-wulaoshi-amazon-category-sales-trend-skill/commit/19a8a50ef279264db1259928fdd06e610a33a3db) |
 | v1.2.0 | 2026-08-07 | 新增跨境吴老师品牌化执行提示：覆盖模板准备、MCP 连接、类目确认、数据采集、看板生成、阻塞与完成路径。 | [`d75f302`](https://github.com/defway888-design/kuajing-wulaoshi-amazon-category-sales-trend-skill/commit/d75f3024152e7389e9353be355f93f50acd0aab1) |
+| v1.3.0 | 2026-09-01 | 新增公共仓库与运行时可移植性规则：安装到每位用户自己的 Codex 目录，动态使用本机 MCP 与可写交付目录，不依赖开发机路径、账号或配置。 | [`3ce777a`](https://github.com/defway888-design/kuajing-wulaoshi-amazon-category-sales-trend-skill/commit/3ce777a114221db33330abe548016e13713e802d) |
