@@ -2,7 +2,7 @@
 
 基于用户本地配置的卖家精灵（SellerSprite）MCP，为指定商品和 Amazon 站点定位高度相关的类目，并生成近 24 个自然月的完整类目销量趋势离线 HTML 看板。MCP 能验证叶子时自动使用已验证叶子类目；不能验证时，必须先由用户确认最细匹配类目。
 
-## 一、适用场景
+## 适用场景
 
 - 需要观察某商品所属 Amazon 已验证叶子类目，或用户确认最细匹配类目的月度销量趋势。
 - 需要比较前 12 个月与近 12 个月的完整类目销量。
@@ -10,24 +10,23 @@
 
 不用于关键词趋势、ASIN 销量趋势，且不会使用 Top 100 商品样本替代完整类目销量。
 
-## 二、从公共仓库安装
+## 运行前准备
 
-本仓库为公共 GitHub 仓库。安装无需提交 GitHub 用户名、接受邀请、申请访问权限或提供 GitHub 令牌。
+- 在自己的运行环境中配置卖家精灵 MCP；启动时提供商品名称与 Amazon 站点。类目无法由工具验证为叶子时，须由用户确认候选路径。
 
-在 Codex 中新建一个对话，输入：
+## 首次安装
+
+本仓库为**公开仓库**，无需提交 GitHub 用户名或接受私有仓库邀请；不要在对话中提供密码或访问令牌。
+
+点击下方代码块的复制按钮，将整段指令发送给 Codex：
 
 ```text
-请从以下 GitHub 仓库安装跨境吴老师 Amazon 类目销量趋势 Skill：
-https://github.com/defway888-design/kuajing-wulaoshi-amazon-category-sales-trend-skill
+请从 https://github.com/defway888-design/kuajing-wulaoshi-amazon-category-sales-trend-skill 安装跨境吴老师 Amazon 类目销量趋势 Skill。
 ```
 
-Codex 会下载并安装到当前用户自己的 `$CODEX_HOME/skills/kuajing-wulaoshi-amazon-category-sales-trend`；未设置 `CODEX_HOME` 时，默认安装到 `~/.codex/skills/kuajing-wulaoshi-amazon-category-sales-trend`。无需手动创建固定路径。
+安装后按当前平台提示刷新或重新加载 Skill；只有当前客户端未识别新 Skill 时才重启。
 
-安装完成后，该 Skill 会在下一个 Codex 对话中可用；如当前客户端尚未刷新 Skill 列表，再重启 Codex。
-
-安装完成后，关闭并重新打开 Codex，使 Skill 生效。
-
-## 三、启动方式
+## 启动方式
 
 安装后，可在 Codex 输入以下任一短语：
 
@@ -48,7 +47,7 @@ Skill 会先要求提供：
 
 执行时会按真实进度显示跨境吴老师品牌提示，例如“跨境吴老师正在检查卖家精灵 MCP 连接…”、“跨境吴老师正在获取近24个月完整类目销量数据…”和“跨境吴老师正在生成类目销量趋势看板…”。遇到需要选择连接、确认类目或任务阻塞时，也会以跨境吴老师前缀说明下一步或事实原因。
 
-## 四、执行后会发生什么
+## 执行结果与失败边界
 
 1. Skill 在当前运行环境中发现并绑定用户自己的卖家精灵 MCP；不会固定使用特定 MCP 服务名、地址或账号。
 2. 根据商品语义定位候选类目；`product_node` 的发现请求不传 `month`，避免将月度销量阶段的参数误用于类目发现。MCP 可验证叶子时自动继续，无法验证时展示类目路径与 `nodeIdPath`，等待用户确认后再继续。
@@ -57,7 +56,9 @@ Skill 会先要求提供：
 
 若某些月份不可用，页面会保留这 24 个日历月份，缺失月显示“—（缺失）”。已确认月份仍可统计；但当前后两个 12 个月周期任一方覆盖不完整时，变化量与增长率均显示“—”。
 
-## 五、使用注意
+## 使用边界与安全
+
+- 不要把密码、Token、API Key、个人连接配置或真实客户数据提交到本仓库；数据连接使用运行者自己的环境。
 
 - 请先在自己的 Codex 环境配置可用的卖家精灵 MCP。
 - 有多个可用卖家精灵 MCP 连接时，Skill 会请你选择本次任务使用的连接。
@@ -68,7 +69,7 @@ Skill 会先要求提供：
 - 不会将商品名、类目路径、节点 ID、销量、MCP 地址、密钥或调用日志写入本 Skill 仓库。
 - 本 Skill 为跨境吴老师专用模板，未经授权不得移除、替换或弱化 Skill 名称、执行提示和页面标题中的跨境吴老师标识。
 
-## 六、仓库文件说明
+## 仓库文件
 
 | 文件或目录 | 作用 |
 | --- | --- |
@@ -78,14 +79,16 @@ Skill 会先要求提供：
 | `assets/category-sales-trend-template.html` | 固定紫粉视觉的离线 HTML 看板模板。 |
 | `scripts/build_dashboard.py` | 校验月度数据并向模板安全注入数据的本地构建脚本。 |
 
-## 七、版本记录
+## 版本更新记录
+
+> 文档修订（2026-09-25，北京时间）：README 按跨境吴老师统一板式调整；仅改变用户说明，业务规则与现有功能版本未变。
 
 **后续每次发布功能更新，均在下表新增一行。GitHub 提交记录只记录该功能变更对应的主要提交；仅补充或修订说明文档时，不新增功能版本，也不新增版本记录行。**
 
 | 版本 | 日期 | 功能变更 | 主要提交 |
 | --- | --- | --- | --- |
-| v1.0.0 | 2026-08-07 | 首次发布：动态绑定卖家精灵 MCP，基于完整类目 `totalUnits` 生成近 24 个月离线销量趋势看板，并支持缺失月份的部分覆盖展示。 | [`4701a41`](https://github.com/defway888-design/kuajing-wulaoshi-amazon-category-sales-trend-skill/commit/4701a41724952ff356f6225e9c8ca9589c4902b8) |
-| v1.1.0 | 2026-08-07 | 新增类目双轨确认：MCP 可验证叶子时自动继续；缺少叶子验证能力时必须取得用户对具体路径的确认，并在看板中透明标注未验证状态。 | [`19a8a50`](https://github.com/defway888-design/kuajing-wulaoshi-amazon-category-sales-trend-skill/commit/19a8a50ef279264db1259928fdd06e610a33a3db) |
-| v1.2.0 | 2026-08-07 | 新增跨境吴老师品牌化执行提示：覆盖模板准备、MCP 连接、类目确认、数据采集、看板生成、阻塞与完成路径。 | [`d75f302`](https://github.com/defway888-design/kuajing-wulaoshi-amazon-category-sales-trend-skill/commit/d75f3024152e7389e9353be355f93f50acd0aab1) |
-| v1.3.0 | 2026-09-01 | 新增公共仓库与运行时可移植性规则：安装到每位用户自己的 Codex 目录，动态使用本机 MCP 与可写交付目录，不依赖开发机路径、账号或配置。 | [`3ce777a`](https://github.com/defway888-design/kuajing-wulaoshi-amazon-category-sales-trend-skill/commit/3ce777a114221db33330abe548016e13713e802d) |
 | v1.4.0 | 2026-09-05 | 新增类目发现与月度采集的请求隔离：`product_node` 发现请求禁止传 `month`；误传时不以空结果判定无匹配类目。 | [`aa84126`](https://github.com/defway888-design/kuajing-wulaoshi-amazon-category-sales-trend-skill/commit/aa8412697a12608d4e89a3aa9f5024c849633f25) |
+| v1.3.0 | 2026-09-01 | 新增公共仓库与运行时可移植性规则：安装到每位用户自己的 Codex 目录，动态使用本机 MCP 与可写交付目录，不依赖开发机路径、账号或配置。 | [`3ce777a`](https://github.com/defway888-design/kuajing-wulaoshi-amazon-category-sales-trend-skill/commit/3ce777a114221db33330abe548016e13713e802d) |
+| v1.2.0 | 2026-08-07 | 新增跨境吴老师品牌化执行提示：覆盖模板准备、MCP 连接、类目确认、数据采集、看板生成、阻塞与完成路径。 | [`d75f302`](https://github.com/defway888-design/kuajing-wulaoshi-amazon-category-sales-trend-skill/commit/d75f3024152e7389e9353be355f93f50acd0aab1) |
+| v1.1.0 | 2026-08-07 | 新增类目双轨确认：MCP 可验证叶子时自动继续；缺少叶子验证能力时必须取得用户对具体路径的确认，并在看板中透明标注未验证状态。 | [`19a8a50`](https://github.com/defway888-design/kuajing-wulaoshi-amazon-category-sales-trend-skill/commit/19a8a50ef279264db1259928fdd06e610a33a3db) |
+| v1.0.0 | 2026-08-07 | 首次发布：动态绑定卖家精灵 MCP，基于完整类目 `totalUnits` 生成近 24 个月离线销量趋势看板，并支持缺失月份的部分覆盖展示。 | [`4701a41`](https://github.com/defway888-design/kuajing-wulaoshi-amazon-category-sales-trend-skill/commit/4701a41724952ff356f6225e9c8ca9589c4902b8) |
